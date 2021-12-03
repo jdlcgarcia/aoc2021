@@ -1,0 +1,32 @@
+<?php
+
+namespace Jdlcgarcia\Aoc2021\Utils;
+
+use JetBrains\PhpStorm\Pure;
+
+class FileParser
+{
+    /**
+     * @param string $filename
+     * @return int[]
+     */
+    #[Pure] public function loadIntegerListFile(string $filename): array
+    {
+        $integerList = [];
+        $stringList = explode(PHP_EOL, $this->loadFileContent($filename));
+        foreach($stringList as $item) {
+            $integerList[] = (int)$item;
+        }
+
+        return $integerList;
+    }
+
+    /**
+     * @param string $filename
+     * @return string
+     */
+    private function loadFileContent(string $filename): string
+    {
+        return file_get_contents($filename, FILE_USE_INCLUDE_PATH);
+    }
+}
