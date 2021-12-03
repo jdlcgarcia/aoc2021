@@ -3,6 +3,7 @@
 namespace Submarine\Services;
 
 use Jdlcgarcia\Aoc2021\Submarine\Position;
+use Jdlcgarcia\Aoc2021\Submarine\PositionWithAim;
 use Jdlcgarcia\Aoc2021\Submarine\Services\MoveService;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +20,8 @@ class MoveServiceTest extends TestCase
             'forward 2',
         ];
 
-        $this->expectedResult = 150;
+        $this->expectedResultWithRegularPosition = 150;
+        $this->expectedResultWithPositionWithAim = 900;
     }
     public function testMoveService()
     {
@@ -27,7 +29,7 @@ class MoveServiceTest extends TestCase
         foreach($this->testCase as $movementLine) {
             $service->processMove($movementLine);
         }
-        $this->assertEquals($this->expectedResult, $service->getScalarPosition());
+        $this->assertEquals($this->expectedResultWithRegularPosition, $service->getScalarPosition());
     }
 
     public function testMoveServiceWithEmptyLines()
@@ -37,6 +39,15 @@ class MoveServiceTest extends TestCase
         foreach($this->testCase as $movementLine) {
             $service->processMove($movementLine);
         }
-        $this->assertEquals($this->expectedResult, $service->getScalarPosition());
+        $this->assertEquals($this->expectedResultWithRegularPosition, $service->getScalarPosition());
+    }
+
+    public function testMoveServiceWithPositionWithAim()
+    {
+        $service = new MoveService(new PositionWithAim());
+        foreach($this->testCase as $movementLine) {
+            $service->processMove($movementLine);
+        }
+        $this->assertEquals($this->expectedResultWithPositionWithAim, $service->getScalarPosition());
     }
 }

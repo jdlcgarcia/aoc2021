@@ -4,12 +4,8 @@ namespace Jdlcgarcia\Aoc2021\Submarine;
 
 use Jdlcgarcia\Aoc2021\Submarine\Exceptions\CommandNotSupportedException;
 
-class PositionWithAim
+class PositionWithAim implements PositionInterface
 {
-    const FORWARD = 'forward';
-    const UP = 'up';
-    const DOWN = 'down';
-
     private int $horizontal;
     private int $depth;
     private int $aim;

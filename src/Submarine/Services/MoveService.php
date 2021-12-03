@@ -3,6 +3,7 @@
 namespace Jdlcgarcia\Aoc2021\Submarine\Services;
 
 use Jdlcgarcia\Aoc2021\Submarine\Position;
+use Jdlcgarcia\Aoc2021\Submarine\PositionInterface;
 use JetBrains\PhpStorm\Pure;
 
 class MoveService
@@ -10,7 +11,7 @@ class MoveService
     const SEPARATOR = ' ';
     private $position;
 
-    public function __construct(Position $position)
+    public function __construct(PositionInterface $position)
     {
         $this->position = $position;
     }
