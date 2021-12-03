@@ -8,4 +8,5 @@ use Jdlcgarcia\Aoc2021\Utils\FileParser;
 $parser = new FileParser();
 $depths = $parser->loadIntegerListFile('input/01.txt');
 $sonar = new Sonar();
-echo $sonar->countDepthIncreases($depths);
+echo $sonar->countDepthIncreases($depths) . PHP_EOL;
+echo $sonar->countThreeMeasurementSlidingWindowDepthIncreases($depths) . PHP_EOL;
