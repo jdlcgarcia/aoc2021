@@ -4,19 +4,25 @@ namespace Jdlcgarcia\Aoc2021\Submarine;
 
 use Jdlcgarcia\Aoc2021\Submarine\Exceptions\CommandNotSupportedException;
 
-class Position implements PositionInterface
+class PositionWithAim
 {
+    const FORWARD = 'forward';
+    const UP = 'up';
+    const DOWN = 'down';
+
     private int $horizontal;
     private int $depth;
+    private int $aim;
 
     /**
      * @param int $horizontal
      * @param int $depth
      */
-    public function __construct(int $horizontal = 0, int $depth = 0)
+    public function __construct(int $horizontal = 0, int $depth = 0, int $aim = 0)
     {
         $this->horizontal = $horizontal;
         $this->depth = $depth;
+        $this->aim = $aim;
     }
 
     public function getHorizontal(): int
@@ -27,6 +33,11 @@ class Position implements PositionInterface
     public function getDepth(): int
     {
         return $this->depth;
+    }
+
+    public function getAim(): int
+    {
+        return $this->aim;
     }
 
     /**
@@ -53,15 +64,16 @@ class Position implements PositionInterface
     private function moveForward(int $x): void
     {
         $this->horizontal += $x;
+        $this->depth += $x * $this->aim;
     }
 
     private function moveUp(int $x): void
     {
-        $this->depth -= $x;
+        $this->aim -= $x;
     }
 
     private function moveDown(int $x): void
     {
-        $this->depth += $x;
+        $this->aim += $x;
     }
 }
