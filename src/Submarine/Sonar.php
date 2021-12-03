@@ -21,4 +21,19 @@ class Sonar
 
         return $increase;
     }
+
+    public function countThreeMeasurementSlidingWindowDepthIncreases(array $depths): int
+    {
+        $lastDepth = new ComplexMeasurement($depths[0], $depths[1], $depths[2]);
+        $increase = 0;
+        for($i = 1; $i <= count($depths)-3; $i++) {
+            $currentDepth = new ComplexMeasurement($depths[$i], $depths[$i+1], $depths[$i+2]);
+            if ($currentDepth->getValue() > $lastDepth->getValue()) {
+                $increase++;
+            }
+            $lastDepth = $currentDepth;
+        }
+
+        return $increase;
+    }
 }

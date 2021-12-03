@@ -22,7 +22,8 @@ class SonarTest extends TestCase
             263
         ];
 
-        $this->expectedResult = 7;
+        $this->integerListExpectedResult = 7;
+        $this->complexMeasurementExpectedResult = 5;
     }
 
     public function testCountDepthIncreases()
@@ -30,6 +31,14 @@ class SonarTest extends TestCase
         $sonar = new Sonar();
         $depth = $sonar->countDepthIncreases($this->testCase);
 
-        $this->assertEquals($this->expectedResult, $depth);
+        $this->assertEquals($this->integerListExpectedResult, $depth);
+    }
+
+    public function testCountThreeMeasurementSlidingWindowDepthIncreases()
+    {
+        $sonar = new Sonar();
+        $depth = $sonar->countThreeMeasurementSlidingWindowDepthIncreases($this->testCase);
+
+        $this->assertEquals($this->complexMeasurementExpectedResult, $depth);
     }
 }
