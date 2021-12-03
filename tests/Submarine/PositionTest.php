@@ -30,10 +30,11 @@ class PositionTest extends TestCase
         $position = new Position();
         $position->moveForward(3);
         $position->moveUp(5);
+        $position->moveDown(1);
 
         $this->assertEquals(3, $position->getHorizontal());
-        $this->assertEquals(-5, $position->getDepth());
-        $this->assertEquals(-15, $position->getPosition());
+        $this->assertEquals(-4, $position->getDepth());
+        $this->assertEquals(-12, $position->getPosition());
     }
 
     public function testMoveAfterConcretePosition()
@@ -41,9 +42,10 @@ class PositionTest extends TestCase
         $position = new Position(5, -2);
         $position->moveForward(3);
         $position->moveUp(5);
+        $position->moveDown(1);
 
         $this->assertEquals(8, $position->getHorizontal());
-        $this->assertEquals(-7, $position->getDepth());
-        $this->assertEquals(-56, $position->getPosition());
+        $this->assertEquals(-6, $position->getDepth());
+        $this->assertEquals(-48, $position->getPosition());
     }
 }
