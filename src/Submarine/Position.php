@@ -2,8 +2,14 @@
 
 namespace Jdlcgarcia\Aoc2021\Submarine;
 
+use Jdlcgarcia\Aoc2021\Submarine\Exceptions\CommandNotSupportedException;
+
 class Position
 {
+    const FORWARD = 'forward';
+    const UP = 'up';
+    const DOWN = 'down';
+
     private int $horizontal;
     private int $depth;
 
@@ -32,18 +38,38 @@ class Position
         return $this->horizontal * $this->depth;
     }
 
+    /**
+     * @throws CommandNotSupportedException
+     */
+    public function move(string $direction, int $distance)
+    {
+        switch($direction){
+            case self::FORWARD:
+                $this->moveForward($distance);
+                break;
+            case self::UP:
+                $this->moveUp($distance);
+                break;
+            case self::DOWN:
+                $this->moveDown($distance);
+                break;
+            default:
+                throw new CommandNotSupportedException($direction);
+        }
+    }
 
-    public function moveForward(int $x): void
+
+    private function moveForward(int $x): void
     {
         $this->horizontal += $x;
     }
 
-    public function moveUp(int $x): void
+    private function moveUp(int $x): void
     {
         $this->depth -= $x;
     }
 
-    public function moveDown(int $x): void
+    private function moveDown(int $x): void
     {
         $this->depth += $x;
     }
