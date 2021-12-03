@@ -33,11 +33,6 @@ class Position
         return $this->depth;
     }
 
-    public function getPosition(): int
-    {
-        return $this->horizontal * $this->depth;
-    }
-
     /**
      * @throws CommandNotSupportedException
      */

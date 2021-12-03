@@ -14,7 +14,6 @@ class PositionTest extends TestCase
 
         $this->assertEquals(0, $position->getHorizontal());
         $this->assertEquals(0, $position->getDepth());
-        $this->assertEquals(0, $position->getPosition());
     }
 
     public function testCreateConcretePosition()
@@ -23,7 +22,6 @@ class PositionTest extends TestCase
 
         $this->assertEquals(5, $position->getHorizontal());
         $this->assertEquals(-2, $position->getDepth());
-        $this->assertEquals(-10, $position->getPosition());
     }
 
     public function testMoveAfterEmptyPosition()
@@ -35,7 +33,6 @@ class PositionTest extends TestCase
 
         $this->assertEquals(3, $position->getHorizontal());
         $this->assertEquals(-4, $position->getDepth());
-        $this->assertEquals(-12, $position->getPosition());
     }
 
     public function testMoveAfterConcretePosition()
@@ -47,7 +44,6 @@ class PositionTest extends TestCase
 
         $this->assertEquals(8, $position->getHorizontal());
         $this->assertEquals(-6, $position->getDepth());
-        $this->assertEquals(-48, $position->getPosition());
     }
 
     public function testUnsupportedMove()
