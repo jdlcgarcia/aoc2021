@@ -29,4 +29,9 @@ class FileParser
     {
         return file_get_contents($filename, FILE_USE_INCLUDE_PATH);
     }
+
+    #[Pure] public function loadListFile(string $filename): array
+    {
+        return explode(PHP_EOL, $this->loadFileContent($filename));
+    }
 }
