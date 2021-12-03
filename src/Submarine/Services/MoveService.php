@@ -17,9 +17,11 @@ class MoveService
 
     public function processMove(string $line)
     {
-        list($direction, $distance) = explode(self::SEPARATOR, $line);
+        if ('' !== $line) {
+            list($direction, $distance) = explode(self::SEPARATOR, $line);
 
-        $this->position->move($direction, $distance);
+            $this->position->move($direction, $distance);
+        }
     }
 
     #[Pure] public function getScalarPosition(): int
