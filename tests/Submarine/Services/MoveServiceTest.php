@@ -29,4 +29,14 @@ class MoveServiceTest extends TestCase
         }
         $this->assertEquals($this->expectedResult, $service->getScalarPosition());
     }
+
+    public function testMoveServiceWithEmptyLines()
+    {
+        $service = new MoveService(new Position());
+        $this->testCase[] = '';
+        foreach($this->testCase as $movementLine) {
+            $service->processMove($movementLine);
+        }
+        $this->assertEquals($this->expectedResult, $service->getScalarPosition());
+    }
 }
