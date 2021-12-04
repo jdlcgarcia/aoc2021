@@ -29,7 +29,7 @@ class DiagnosticReportTest extends TestCase
 
     public function testGetPowerConsumption()
     {
-        $report = new DiagnosticReport($this->testValue);
+        $report = new DiagnosticReport($this->testValue, 5);
         $report->process();
 
         $this->assertEquals($this->powerConsumption, $report->powerConsumption());
