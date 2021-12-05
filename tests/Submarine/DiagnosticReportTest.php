@@ -25,6 +25,7 @@ class DiagnosticReportTest extends TestCase
         ];
 
         $this->powerConsumption = 198;
+        $this->lifeSupportRating = 230;
     }
 
     public function testGetPowerConsumption()
@@ -33,5 +34,13 @@ class DiagnosticReportTest extends TestCase
         $report->process();
 
         $this->assertEquals($this->powerConsumption, $report->powerConsumption());
+    }
+
+    public function testGetLifeSupportRating()
+    {
+        $report = new DiagnosticReport($this->testValue, 5);
+        $report->process();
+
+        $this->assertEquals($this->lifeSupportRating, $report->lifeSupportRating());
     }
 }
