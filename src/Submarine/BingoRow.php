@@ -2,6 +2,7 @@
 
 namespace Jdlcgarcia\Aoc2021\Submarine;
 
+use Jdlcgarcia\Aoc2021\Submarine\Exceptions\TooManyNumbersException;
 use JetBrains\PhpStorm\Pure;
 
 class BingoRow
@@ -11,6 +12,9 @@ class BingoRow
 
     #[Pure] public function __construct(array $cellValues)
     {
+        if (count($cellValues) > 5) {
+            throw new TooManyNumbersException($cellValues);
+        }
         foreach($cellValues as $cellValue) {
             $this->cells[] = new BingoCell($cellValue);
         }
