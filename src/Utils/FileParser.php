@@ -21,10 +21,6 @@ class FileParser
         return $integerList;
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
     private function loadFileContent(string $filename): string
     {
         return file_get_contents($filename, FILE_USE_INCLUDE_PATH);
