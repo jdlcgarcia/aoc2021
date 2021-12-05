@@ -22,17 +22,27 @@ class BingoBoardTest extends TestCase
     {
         $bingoBoard = new BingoBoard($this->board);
 
-        $this->assertEquals(22, $bingoBoard->getXY(0, 0));
-        $this->assertEquals(13, $bingoBoard->getXY(0, 1));
-        $this->assertEquals(17, $bingoBoard->getXY(0, 2));
-        $this->assertEquals(11, $bingoBoard->getXY(0, 3));
-        $this->assertEquals(0, $bingoBoard->getXY(0, 4));
+        $this->assertEquals(22, $bingoBoard->getXY(0, 0)->getValue());
+        $this->assertFalse($bingoBoard->getXY(0, 0)->isMarked());
+        $this->assertEquals(13, $bingoBoard->getXY(0, 1)->getValue());
+        $this->assertFalse($bingoBoard->getXY(0, 1)->isMarked());
+        $this->assertEquals(17, $bingoBoard->getXY(0, 2)->getValue());
+        $this->assertFalse($bingoBoard->getXY(0, 2)->isMarked());
+        $this->assertEquals(11, $bingoBoard->getXY(0, 3)->getValue());
+        $this->assertFalse($bingoBoard->getXY(0, 3)->isMarked());
+        $this->assertEquals(0, $bingoBoard->getXY(0, 4)->getValue());
+        $this->assertFalse($bingoBoard->getXY(0, 4)->isMarked());
 
-        $this->assertEquals(8, $bingoBoard->getXY(1, 0));
-        $this->assertEquals(2, $bingoBoard->getXY(1, 1));
-        $this->assertEquals(23, $bingoBoard->getXY(1, 2));
-        $this->assertEquals(4, $bingoBoard->getXY(1, 3));
-        $this->assertEquals(24, $bingoBoard->getXY(1, 4));
+        $this->assertEquals(8, $bingoBoard->getXY(1, 0)->getValue());
+        $this->assertFalse($bingoBoard->getXY(1, 0)->isMarked());
+        $this->assertEquals(2, $bingoBoard->getXY(1, 1)->getValue());
+        $this->assertFalse($bingoBoard->getXY(1, 1)->isMarked());
+        $this->assertEquals(23, $bingoBoard->getXY(1, 2)->getValue());
+        $this->assertFalse($bingoBoard->getXY(1, 2)->isMarked());
+        $this->assertEquals(4, $bingoBoard->getXY(1, 3)->getValue());
+        $this->assertFalse($bingoBoard->getXY(1, 3)->isMarked());
+        $this->assertEquals(24, $bingoBoard->getXY(1, 4)->getValue());
+        $this->assertFalse($bingoBoard->getXY(1, 4)->isMarked());
     }
 
     public function testMarkOnlyOneCell()
@@ -53,7 +63,7 @@ class BingoBoardTest extends TestCase
         $bingoBoard->markNumber(16);
         $winner = $bingoBoard->markNumber(7);
         $this->assertTrue($winner);
-        $this->assertEquals(469, $bingoBoard->getScore());
+        $this->assertEquals(233, $bingoBoard->getScore());
     }
 
     public function testMarkFiveNumbersAndLose()

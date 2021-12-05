@@ -2,21 +2,28 @@
 
 namespace Jdlcgarcia\Aoc2021\Submarine;
 
+use JetBrains\PhpStorm\Pure;
+
 class BingoBoard
 {
+    /** @var BingoRow[] */
     private array $board;
     private array $rowCount = [0, 0, 0, 0, 0];
     private array $columnCount = [0, 0, 0, 0, 0];
     private int $score = 0;
 
-    public function __construct(array $board)
+    #[Pure] public function __construct(array $board)
     {
-        $this->board = $board;
+        foreach ($board as $row) {
+            $bingoBoard = new BingoRow($row);
+            $this->board[] = $bingoBoard;
+            $this->score += $bingoBoard->getScore();
+        }
     }
 
-    public function getXY(int $row, int $column): int
+    public function getXY(int $row, int $column): BingoCell
     {
-        return $this->board[$row][$column];
+        return $this->board[$row]->getCell($column);
     }
 
     public function getScore(): int
@@ -26,46 +33,26 @@ class BingoBoard
 
     public function markNumber(int $ball): bool
     {
-        foreach ($this->board as $rowIndex => $row) {
-            foreach ($row as $columnIndex => $cell) {
-                if ($cell === $ball) {
-                    $this->rowCount[$rowIndex]++;
-                    $this->columnCount[$columnIndex]++;
+        foreach ($this->board as $rowIndex => $bingoRow) {
+            $columnIndex = $bingoRow->mark($ball);
+            if (!is_null($columnIndex)) {
+                $this->score -= $ball;
+                $this->rowCount[$rowIndex]++;
+                $this->columnCount[$columnIndex]++;
 
-                    if (($this->rowCount[$rowIndex] !== 5) && ($this->columnCount[$columnIndex] !== 5)) {
-                        return false;
-                    }
-
-                    if ($this->rowCount[$rowIndex] === 5) {
-                        $this->calculateRowScore($rowIndex, $ball);
-                    } else {
-                        $this->calculateColumnScore($columnIndex, $ball);
-                    }
+                if ($this->isWinner($rowIndex, $columnIndex)) {
                     return true;
                 }
+
+                return false;
             }
         }
 
         return false;
     }
 
-    private function calculateRowScore(int $rowIndex, mixed $ball): void
+    private function isWinner(int $rowIndex, int $columnIndex)
     {
-        foreach ($this->board[$rowIndex] as $cell) {
-            $this->score += $cell;
-        }
-        $this->score *= $ball;
-    }
-
-    private function calculateColumnScore(int $columnIndex, mixed $ball): void
-    {
-        foreach ($this->board as $row) {
-            foreach ($row as $index => $cell) {
-                if ($index === $columnIndex) {
-                    $this->score += $cell;
-                }
-            }
-        }
-        $this->score *= $ball;
+        return ($this->rowCount[$rowIndex] === 5 || $this->columnCount[$columnIndex] === 5);
     }
 }
