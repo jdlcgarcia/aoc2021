@@ -53,6 +53,7 @@ class BingoBoardTest extends TestCase
         $bingoBoard->markNumber(16);
         $winner = $bingoBoard->markNumber(7);
         $this->assertTrue($winner);
+        $this->assertEquals(469, $bingoBoard->getScore());
     }
 
     public function testMarkFiveNumbersAndLose()

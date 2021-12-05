@@ -19,6 +19,11 @@ class BingoBoard
         return $this->board[$row][$column];
     }
 
+    public function getScore(): int
+    {
+        return $this->score;
+    }
+
     public function markNumber(int $ball): bool
     {
         foreach ($this->board as $rowIndex => $row) {
