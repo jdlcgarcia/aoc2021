@@ -20,18 +20,11 @@ while (!empty($bingoRawGame)) {
     $row5 = array_map('intval', preg_split('/\s+/', trim(array_shift($bingoRawGame))));
     $boardList[] = new BingoBoard([$row1, $row2, $row3, $row4, $row5]);
 }
+
 $game = new BingoService($boardList);
 
 foreach($drawList as $drawnNumber) {
-    $result = $game->draw($drawnNumber);
-    if (!is_null($result)) {
-        echo $result . PHP_EOL;
-        break;
-    }
+    $game->drawLastWinner($drawnNumber);
 }
 
-var_dump($bingoRawGame);
-//$diagnosticReport = new DiagnosticReport($movementsList, 12);
-//$diagnosticReport->process();
-//echo $diagnosticReport->powerConsumption() . PHP_EOL;
-//echo $diagnosticReport->lifeSupportRating() . PHP_EOL;
+echo $game->getLastScore() . PHP_EOL;
