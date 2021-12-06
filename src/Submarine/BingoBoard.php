@@ -11,6 +11,7 @@ class BingoBoard
     private array $rowCount = [0, 0, 0, 0, 0];
     private array $columnCount = [0, 0, 0, 0, 0];
     private int $score = 0;
+    private bool $winner = false;
 
     #[Pure] public function __construct(array $board)
     {
@@ -40,7 +41,9 @@ class BingoBoard
                 $this->rowCount[$rowIndex]++;
                 $this->columnCount[$columnIndex]++;
 
-                if ($this->isWinner($rowIndex, $columnIndex)) {
+                if ($this->checkWinner($rowIndex, $columnIndex)) {
+                    $this->winner = true;
+
                     return true;
                 }
 
@@ -51,8 +54,13 @@ class BingoBoard
         return false;
     }
 
-    private function isWinner(int $rowIndex, int $columnIndex)
+    private function checkWinner(int $rowIndex, int $columnIndex): bool
     {
         return ($this->rowCount[$rowIndex] === 5 || $this->columnCount[$columnIndex] === 5);
+    }
+
+    public function isWinner(): bool
+    {
+        return $this->winner;
     }
 }

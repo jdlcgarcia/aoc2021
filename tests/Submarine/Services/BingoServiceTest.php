@@ -64,4 +64,18 @@ class BingoServiceTest extends TestCase
 
         $this->assertEquals(4512, $game->draw(24));
     }
+
+    public function testCreateGameAndDrawNumbersToWinAsLateAsPossible()
+    {
+        $board1 = new BingoBoard($this->board1);
+        $board2 = new BingoBoard($this->board2);
+        $board3 = new BingoBoard($this->board3);
+        $game = new BingoService([$board1, $board2, $board3]);
+        $draws = '7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1';
+        foreach(explode(',', $draws) as $draw) {
+            $game->drawLastWinner($draw);
+        }
+
+        $this->assertEquals(1924, $game->getLastScore());
+    }
 }
