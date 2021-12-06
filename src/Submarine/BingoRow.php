@@ -61,4 +61,16 @@ class BingoRow
 
         return null;
     }
+
+    public function debug(): void
+    {
+        foreach ($this->cells as $cell) {
+            if ($cell->isMarked()) {
+                echo "X";
+            } else {
+                echo $cell->getValue();
+            }
+            echo " ";
+        }
+    }
 }

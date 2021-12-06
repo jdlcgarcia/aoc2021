@@ -63,4 +63,12 @@ class BingoBoard
     {
         return $this->winner;
     }
+
+    public function debug(): void
+    {
+        foreach ($this->board as $boardRow) {
+            $boardRow->debug();
+            echo PHP_EOL;
+        }
+    }
 }
