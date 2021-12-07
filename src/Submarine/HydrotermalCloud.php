@@ -24,7 +24,7 @@ class HydrotermalCloud
                 $this->end = $origin;
             }
         } else {
-            if ($origin->getX() < $end->getY()) {
+            if ($origin->getX() < $end->getX()) {
                 $this->origin = $origin;
                 $this->end = $end;
             } else {
@@ -32,8 +32,6 @@ class HydrotermalCloud
                 $this->end = $origin;
             }
         }
-
-
     }
 
     /**
@@ -68,12 +66,12 @@ class HydrotermalCloud
         return $points;
     }
 
-    #[Pure] private function isVertical(): bool
+    #[Pure] public function isVertical(): bool
     {
         return $this->origin->getX() === $this->end->getX();
     }
 
-    #[Pure] private function isHorizontal(): bool
+    #[Pure] public function isHorizontal(): bool
     {
         return $this->origin->getY() === $this->end->getY();
     }
