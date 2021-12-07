@@ -7,7 +7,7 @@ use Jdlcgarcia\Aoc2021\Submarine\Point;
 use Jdlcgarcia\Aoc2021\Submarine\Services\Hydrotermal90DegreeRadar;
 use PHPUnit\Framework\TestCase;
 
-class HydrotermalRadarTest extends TestCase
+class Hydrotermal90DegreeRadarTest extends TestCase
 {
     public function testDemoInput()
     {
@@ -24,7 +24,6 @@ class HydrotermalRadarTest extends TestCase
             new HydrotermalCloud(new Point(5, 5), new Point(8, 2)),
         ];
         $service = new Hydrotermal90DegreeRadar($clouds);
-        $service->draw();
         $this->assertEquals(5, $service->getOverlappingPositions());
     }
 }
