@@ -7,55 +7,20 @@ use Jdlcgarcia\Aoc2021\Submarine\Point;
 
 class HydrotermalRadar
 {
-    private const EMPTY = '.';
+    protected const EMPTY = '.';
     /** @var HydrotermalCloud[]  */
-    private array $clouds = [];
+    protected array $clouds = [];
     /** @var int[]  */
-    private array $matrix = [];
-    private Point $maxPoint;
+    protected array $matrix = [];
+    protected Point $maxPoint;
 
     /**
      * @param HydrotermalCloud[] $clouds
      */
     public function __construct(array $clouds)
     {
-        $this->maxPoint = new Point();
-        foreach($clouds as $cloud) {
-            if ($cloud->isHorizontal() || $cloud->isVertical()) {
-                $this->clouds[] = $cloud;
-
-                if ($cloud->getOrigin()->getX() > $this->maxPoint->getX()) {
-                    $this->maxPoint->setX($cloud->getOrigin()->getX());
-                }
-                if ($cloud->getEnd()->getX() > $this->maxPoint->getX()) {
-                    $this->maxPoint->setX($cloud->getEnd()->getX());
-                }
-                if ($cloud->getOrigin()->getY() > $this->maxPoint->getY()) {
-                    $this->maxPoint->setY($cloud->getOrigin()->getY());
-                }
-                if ($cloud->getEnd()->getY() > $this->maxPoint->getY()) {
-                    $this->maxPoint->setY($cloud->getEnd()->getY());
-                }
-            }
-        }
-
-        for ($y = 0; $y <= $this->maxPoint->getY(); $y++) {
-            for ($x = 0; $x <= $this->maxPoint->getX(); $x++) {
-                $this->matrix[$x][$y] = self::EMPTY;
-            }
-        }
-
-        if (sizeof($this->clouds) > 0) {
-            foreach ($this->clouds as $cloud) {
-                foreach($cloud->getPoints() as $point) {
-                    if ($this->matrix[$point->getX()][$point->getY()] === '.') {
-                        $this->matrix[$point->getX()][$point->getY()] = 1;
-                    } else {
-                        $this->matrix[$point->getX()][$point->getY()]++;
-                    }
-                }
-            }
-        }
+        $this->resetGrid();
+        $this->fillClouds();
     }
 
     public function draw()
@@ -80,5 +45,35 @@ class HydrotermalRadar
         }
 
         return $overlappingPositions;
+    }
+
+    /**
+     * @return void
+     */
+    private function fillClouds(): void
+    {
+        if (sizeof($this->clouds) > 0) {
+            foreach ($this->clouds as $cloud) {
+                foreach ($cloud->getPoints() as $point) {
+                    if ($this->matrix[$point->getX()][$point->getY()] === '.') {
+                        $this->matrix[$point->getX()][$point->getY()] = 1;
+                    } else {
+                        $this->matrix[$point->getX()][$point->getY()]++;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function resetGrid(): void
+    {
+        for ($y = 0; $y <= $this->maxPoint->getY(); $y++) {
+            for ($x = 0; $x <= $this->maxPoint->getX(); $x++) {
+                $this->matrix[$x][$y] = self::EMPTY;
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 use Jdlcgarcia\Aoc2021\Submarine\DiagnosticReport;
 use Jdlcgarcia\Aoc2021\Submarine\HydrotermalCloud;
 use Jdlcgarcia\Aoc2021\Submarine\Point;
-use Jdlcgarcia\Aoc2021\Submarine\Services\HydrotermalRadar;
+use Jdlcgarcia\Aoc2021\Submarine\Services\Hydrotermal90DegreeRadar;
 use Jdlcgarcia\Aoc2021\Utils\FileParser;
 
 $parser = new FileParser();
@@ -20,5 +20,5 @@ foreach($rawHydrotermalClouds as $rawHydrotermalCloud) {
     }
 }
 
-$service = new HydrotermalRadar($hydrotermalClouds);
+$service = new Hydrotermal90DegreeRadar($hydrotermalClouds);
 echo $service->getOverlappingPositions() . PHP_EOL;
