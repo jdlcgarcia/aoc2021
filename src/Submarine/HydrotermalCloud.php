@@ -33,21 +33,11 @@ class HydrotermalCloud
             }
         } else {
             if ($origin->getX() < $end->getX()) {
-                if ($origin->getY() < $end->getY()) {
-                    $this->origin = $origin;
-                    $this->end = $end;
-                } else {
-                    $this->origin = $end;
-                    $this->end = $origin;
-                }
+                $this->origin = $origin;
+                $this->end = $end;
             } else {
-                if ($origin->getY() < $end->getY()) {
-                    $this->origin = $end;
-                    $this->end = $origin;
-                } else {
-                    $this->origin = $origin;
-                    $this->end = $end;
-                }
+                $this->origin = $end;
+                $this->end = $origin;
             }
         }
     }
