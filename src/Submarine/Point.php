@@ -11,7 +11,7 @@ class Point
      * @param int $x
      * @param int $y
      */
-    public function __construct(int $x, int $y)
+    public function __construct(int $x = 0, int $y = 0)
     {
         $this->x = $x;
         $this->y = $y;
@@ -33,5 +33,19 @@ class Point
         return $this->y;
     }
 
+    /**
+     * @param int $x
+     */
+    public function setX(int $x): void
+    {
+        $this->x = $x;
+    }
 
+    /**
+     * @param int $y
+     */
+    public function setY(int $y): void
+    {
+        $this->y = $y;
+    }
 }
