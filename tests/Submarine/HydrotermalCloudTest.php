@@ -10,8 +10,8 @@ class HydrotermalCloudTest extends TestCase
 {
     public function testCreateHydrotermalCloud()
     {
-        $hydrotermalCloud = new HydrotermalCloud(new Point(1, 1), new Point(1,3));
+        $hydrotermalCloud = new HydrotermalCloud(new Point(3, 4), new Point(1,4));
 
-        $this->assertEquals($hydrotermalCloud->getPoints(), [new Point(1, 1), new Point(1, 2), new Point(1, 3)]);
+        $this->assertEquals($hydrotermalCloud->getPoints(), [new Point(1, 4), new Point(2, 4), new Point(3, 4)]);
     }
 }
