@@ -43,7 +43,6 @@ class LanternfishSchool
     public function fastForward(int $n)
     {
         for ($i = 0; $i < $n; $i++) {
-            echo "Day " . $i . ": " . PHP_EOL;
             $this->progress();
         }
     }
