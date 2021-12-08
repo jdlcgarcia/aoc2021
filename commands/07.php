@@ -14,3 +14,5 @@ foreach($crabSubmarinePositions as $position) {
 }
 $optimizer = new CrabSubmarineOptimizer($crabSubmarines);
 echo $optimizer->getBestPosition() . PHP_EOL;
+$optimizer = new CrabSubmarineOptimizer($crabSubmarines);
+echo $optimizer->getBestPositionWithRealConsumption() . PHP_EOL;
