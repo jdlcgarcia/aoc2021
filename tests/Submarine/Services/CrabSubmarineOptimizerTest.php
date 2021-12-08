@@ -17,4 +17,14 @@ class CrabSubmarineOptimizerTest extends TestCase
         $service = new CrabSubmarineOptimizer($crabSubmarines);
         $this->assertEquals(37, $service->getBestPosition());
     }
+
+    public function testOptimizerWithExampleAndRealConsumption()
+    {
+        $crabSubmarines = [];
+        foreach(explode(',', "16,1,2,0,4,2,7,1,2,14") as $position) {
+            $crabSubmarines[] = new CrabSubmarine($position);
+        }
+        $service = new CrabSubmarineOptimizer($crabSubmarines);
+        $this->assertEquals(168, $service->getBestPositionWithRealConsumption());
+    }
 }
