@@ -8,12 +8,13 @@ class FileParser
 {
     /**
      * @param string $filename
+     * @param $separator
      * @return int[]
      */
-    #[Pure] public function loadIntegerListFile(string $filename): array
+    #[Pure] public function loadIntegerListFile(string $filename, $separator): array
     {
         $integerList = [];
-        $stringList = explode(PHP_EOL, $this->loadFileContent($filename));
+        $stringList = explode($separator, $this->loadFileContent($filename));
         foreach($stringList as $item) {
             $integerList[] = (int)$item;
         }
