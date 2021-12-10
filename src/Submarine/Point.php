@@ -2,6 +2,8 @@
 
 namespace Jdlcgarcia\Aoc2021\Submarine;
 
+use JetBrains\PhpStorm\Pure;
+
 class Point
 {
     private int $x;
@@ -47,5 +49,10 @@ class Point
     public function setY(int $y): void
     {
         $this->y = $y;
+    }
+
+    #[Pure] public function toString(): string
+    {
+        return "(".$this->getX().",".$this->getY().")";
     }
 }
