@@ -16,6 +16,7 @@ class SevenSegmentGuesserTest extends TestCase
 
     public function testMultipleRow()
     {
+        $this->markTestSkipped("takes too long");
         $input = [
             'be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe',
             'edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc',

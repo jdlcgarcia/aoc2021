@@ -16,10 +16,11 @@ class LowPointFinderTest extends TestCase
             '21',
             '39',
         ];
-        $finder = new LowPointFinder(new HeightMap($heightMapInput));
+        $finder = new LowPointFinder(new HeightMap($heightMapInput), new HeightMap($heightMapInput));
         $lowPoints = $finder->getLowPoints();
         $this->assertEquals([new HeightPoint(new Point(1, 0), 1)], $lowPoints);
         $this->assertEquals(2, $finder->getRiskLevel());
+        $this->assertEquals(3, $finder->getThreeWorstBasins());
     }
 
     public function testFindLowPointsInBigHeightMap()
@@ -31,7 +32,7 @@ class LowPointFinderTest extends TestCase
             '8767896789',
             '9899965678',
         ];
-        $finder = new LowPointFinder(new HeightMap($heightMapInput));
+        $finder = new LowPointFinder(new HeightMap($heightMapInput), new HeightMap($heightMapInput));
         $lowPoints = $finder->getLowPoints();
         $this->assertEquals([
             new HeightPoint(new Point(1, 0), 1),
@@ -40,5 +41,6 @@ class LowPointFinderTest extends TestCase
             new HeightPoint(new Point(6, 4), 5)
         ], $lowPoints);
         $this->assertEquals(15, $finder->getRiskLevel());
+        $this->assertEquals(1134, $finder->getThreeWorstBasins());
     }
 }

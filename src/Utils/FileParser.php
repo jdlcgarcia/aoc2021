@@ -8,10 +8,10 @@ class FileParser
 {
     /**
      * @param string $filename
-     * @param $separator
+     * @param string $separator
      * @return int[]
      */
-    #[Pure] public function loadIntegerListFile(string $filename, $separator): array
+    #[Pure] public function loadIntegerListFile(string $filename, string $separator = ''): array
     {
         $integerList = [];
         $stringList = explode($separator, $this->loadFileContent($filename));
