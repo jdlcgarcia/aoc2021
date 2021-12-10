@@ -4,12 +4,12 @@ namespace Jdlcgarcia\Aoc2021\Submarine\Services;
 
 use Jdlcgarcia\Aoc2021\Submarine\Exceptions\PointDoesNotExistException;
 use Jdlcgarcia\Aoc2021\Submarine\HeightMap;
-use Jdlcgarcia\Aoc2021\Submarine\HeightPoint;
 
 class LowPointFinder
 {
     private HeightMap $heightMap;
     private array $lowPoints = [];
+    private int $riskLevel = 0;
 
     /**
      * @param HeightMap $heightMap
@@ -17,12 +17,23 @@ class LowPointFinder
     public function __construct(HeightMap $heightMap)
     {
         $this->heightMap = $heightMap;
+        $this->findLowPoints();
+    }
+
+    public function getLowPoints(): array
+    {
+        return $this->lowPoints;
+    }
+
+    public function getRiskLevel(): int
+    {
+        return $this->riskLevel;
     }
 
     /**
-     * @return HeightPoint[]
+     * @return void
      */
-    public function findLowPoints(): array
+    private function findLowPoints(): void
     {
         foreach ($this->heightMap->getPoints() as $pointRow) {
             foreach ($pointRow as $heightPoint) {
@@ -61,10 +72,9 @@ class LowPointFinder
                 }
                 if ($countMinimum === 4) {
                     $this->lowPoints[] = $heightPoint;
+                    $this->riskLevel += 1 + $heightPoint->getHeight();
                 }
             }
         }
-
-        return $this->lowPoints;
     }
 }
