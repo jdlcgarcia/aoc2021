@@ -19,7 +19,7 @@ class SyntaxCheckerTest extends TestCase
             '(((((((((())))))))))'
         ];
         $checker = new SyntaxChecker($input);
-        $this->assertEquals(0, $checker->process());
+        $this->assertEquals(0, $checker->getSyntaxErrorScore());
     }
 
     public function testCheckCorruptLines()
@@ -36,7 +36,7 @@ class SyntaxCheckerTest extends TestCase
         $score += 3;
 
         $checker = new SyntaxChecker($input);
-        $this->assertEquals($score, $checker->process());
+        $this->assertEquals($score, $checker->getSyntaxErrorScore());
     }
 
     public function testCheckIncompleteAndCorruptLines()
@@ -55,6 +55,16 @@ class SyntaxCheckerTest extends TestCase
         ];
 
         $checker = new SyntaxChecker($input);
-        $this->assertEquals(26397, $checker->process());
+        $this->assertEquals(26397, $checker->getSyntaxErrorScore());
+        $this->assertEquals(288957, $checker->getAutocompleteScore());
+    }
+
+    public function testCheckIncompleteLines()
+    {
+        $input = [
+            '<{([{{}}[<[[[<>{}]]]>[]]'
+        ];
+        $checker = new SyntaxChecker($input);
+        $this->assertEquals(294, $checker->getAutocompleteScore());
     }
 }
