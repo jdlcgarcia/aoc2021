@@ -47,22 +47,14 @@ class DumboOctopus
         $this->flash = $flash;
     }
 
-    public function step(): bool
-    {
-        $this->energyLevel++;
-        return $this->processFlashing();
-    }
-
     public function increaseEnergy(): void
     {
-        if (!$this->flash) {
-            $this->energyLevel++;
-        }
+        $this->energyLevel++;
     }
 
     public function processFlashing(): bool
     {
-        if ($this->energyLevel > 9) {
+        if ($this->energyLevel > 9 && !$this->flash) {
             $this->flash = true;
             $this->energyLevel = 0;
         } else {

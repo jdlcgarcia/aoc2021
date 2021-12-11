@@ -239,7 +239,7 @@ class DumboOctopiGridTest extends TestCase
             }
         }
         $this->assertEquals(0, $grid0->getFlashCounter());
-        $grid0->step(true);
+        $grid0->step();
 
         $input2 = [
             '8807476555',
@@ -263,16 +263,21 @@ class DumboOctopiGridTest extends TestCase
                 );
             }
         }
-        //$this->assertEquals(0, $grid0->getFlashCounter());
-//        $grid0->step();
-//        $grid0->step();
-//        $grid0->step();
-//        $grid0->step();
-//        $grid0->step();
-//        $grid0->step();
-//        $grid0->step();
-//        $grid0->step();
-//
-//        $this->assertEquals(204, $grid0->getFlashCounter());
+        $this->assertEquals(35, $grid0->getFlashCounter());
+        $grid0->step();
+        $grid0->step();
+        $grid0->step();
+        $grid0->step();
+        $grid0->step();
+        $grid0->step();
+        $grid0->step();
+        $grid0->step();
+
+        $this->assertEquals(204, $grid0->getFlashCounter());
+
+        for($i = 0; $i < 90; $i++) {
+            $grid0->step();
+        }
+        $this->assertEquals(1656, $grid0->getFlashCounter());
     }
 }

@@ -28,31 +28,10 @@ class DumboOctopiGridMember
     }
 
     /**
-     * @param Point $point
-     */
-    public function setPoint(Point $point): void
-    {
-        $this->point = $point;
-    }
-
-    /**
      * @return DumboOctopus
      */
     public function getOctopus(): DumboOctopus
     {
         return $this->octopus;
-    }
-
-    /**
-     * @param DumboOctopus $octopus
-     */
-    public function setOctopus(DumboOctopus $octopus): void
-    {
-        $this->octopus = $octopus;
-    }
-
-    #[Pure] public function toString(): string
-    {
-        return $this->getPoint()->toString().'('.$this->getOctopus()->getEnergyLevel().')';
     }
 }

@@ -9,7 +9,6 @@ class DumboOctopiGrid
     /** @var DumboOctopiGridMember[][] */
     private array $grid;
     private int $flashCounter = 0;
-    private bool $debug;
 
     public function __construct(array $rows)
     {
@@ -38,62 +37,57 @@ class DumboOctopiGrid
         return $this->flashCounter;
     }
 
-    public function step(bool $debug = false)
+    public function step()
     {
-        $this->debug = $debug;
-        foreach ($this->grid as $row) {
+        foreach($this->grid as $row) {
             foreach ($row as $cell) {
-                if ($cell->getOctopus()->step()) {
-                    $this->flashCounter++;
+                if ($cell->getOctopus()->getEnergyLevel() === 0) {
+                    $cell->getOctopus()->setFlash(false);
                 }
-                if ($this->debug && $cell->getPoint()->getX() === 0 && $cell->getPoint()->getY() === 6) {
-                    echo "increasing point " . $cell->getPoint()->getX() . "," . $cell->getPoint()->getY() . " to get energy " . $cell->getOctopus()->getEnergyLevel() . PHP_EOL;
+                $cell->getOctopus()->increaseEnergy();
+            }
+        }
+        foreach($this->grid as $row) {
+            foreach ($row as $cell) {
+                if ($cell->getOctopus()->getEnergyLevel() > 9 && !$cell->getOctopus()->isFlash()) {
+                    $cell->getOctopus()->setFlash(true);
+                    $this->checkSideEffects($cell);
                 }
             }
         }
-
-        $this->refreshSideEffects();
-    }
-
-    private function refreshSideEffects()
-    {
-        foreach ($this->grid as $row) {
+        foreach($this->grid as $row) {
             foreach ($row as $cell) {
-                if ($this->debug ) {
-                    echo "checking side effects of point " . $cell->toString() . PHP_EOL;
-                }
                 if ($cell->getOctopus()->isFlash()) {
-                    $this->checkNeighbour($cell->getPoint()->getX() - 1, $cell->getPoint()->getY() - 1);
-                    $this->checkNeighbour($cell->getPoint()->getX() - 1, $cell->getPoint()->getY());
-                    $this->checkNeighbour($cell->getPoint()->getX() - 1, $cell->getPoint()->getY() + 1);
-
-                    $this->checkNeighbour($cell->getPoint()->getX(), $cell->getPoint()->getY() - 1);
-
-                    $this->checkNeighbour($cell->getPoint()->getX(), $cell->getPoint()->getY() + 1);
-
-                    $this->checkNeighbour($cell->getPoint()->getX() + 1, $cell->getPoint()->getY() - 1);
-                    $this->checkNeighbour($cell->getPoint()->getX() + 1, $cell->getPoint()->getY());
-                    $this->checkNeighbour($cell->getPoint()->getX() + 1, $cell->getPoint()->getY() + 1);
+                    $this->flashCounter++;
+                    $cell->getOctopus()->setEnergyLevel(0);
                 }
             }
         }
     }
 
-    private function checkNeighbour(int $x, int $y): void
+    private function checkSideEffects(DumboOctopiGridMember $cell)
     {
-        if ($this->debug && $x === 0 && $y === 6) {
-            echo "checking neighbour point " . $x . "," . $y . PHP_EOL;
-        }
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX() - 1, $cell->getPoint()->getY() - 1);
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX() - 1, $cell->getPoint()->getY());
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX() - 1, $cell->getPoint()->getY() + 1);
+
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX(), $cell->getPoint()->getY() - 1);
+
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX(), $cell->getPoint()->getY() + 1);
+
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX() + 1, $cell->getPoint()->getY() - 1);
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX() + 1, $cell->getPoint()->getY());
+        $this->energizeNeighbourIfExists($cell->getPoint()->getX() + 1, $cell->getPoint()->getY() + 1);
+    }
+
+    private function energizeNeighbourIfExists(int $x, int $y)
+    {
         try {
             $neighbour = $this->getOctopus($x, $y);
-            if (!$neighbour->getOctopus()->isFlash()) {
-                $neighbour->getOctopus()->increaseEnergy();
-                if ($x === 0 && $y === 6) {
-                    echo "increasing neighbour point " . $x . "," . $y . " to get energy " . $neighbour->getOctopus()->getEnergyLevel() . PHP_EOL;
-                }
-                if ($neighbour->getOctopus()->processFlashing()) {
-                    $this->flashCounter++;
-                }
+            $neighbour->getOctopus()->increaseEnergy();
+            if ($neighbour->getOctopus()->getEnergyLevel() > 9 && !$neighbour->getOctopus()->isFlash()) {
+                $neighbour->getOctopus()->setFlash(true);
+                $this->checkSideEffects($neighbour);
             }
         } catch (PointDoesNotExistException $e) {
         }
