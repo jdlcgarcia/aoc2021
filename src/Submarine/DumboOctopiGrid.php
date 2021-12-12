@@ -9,6 +9,7 @@ class DumboOctopiGrid
     /** @var DumboOctopiGridMember[][] */
     private array $grid;
     private int $flashCounter = 0;
+    private int $stepCounter = 0;
 
     public function __construct(array $rows)
     {
@@ -39,6 +40,7 @@ class DumboOctopiGrid
 
     public function step()
     {
+        $this->stepCounter++;
         foreach($this->grid as $row) {
             foreach ($row as $cell) {
                 if ($cell->getOctopus()->getEnergyLevel() === 0) {
@@ -63,6 +65,27 @@ class DumboOctopiGrid
                 }
             }
         }
+    }
+
+    public function detectSync(): bool
+    {
+        foreach($this->grid as $row) {
+            foreach ($row as $cell) {
+                if ($cell->getOctopus()->getEnergyLevel() !== 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStepCounter(): int
+    {
+        return $this->stepCounter;
     }
 
     private function checkSideEffects(DumboOctopiGridMember $cell)

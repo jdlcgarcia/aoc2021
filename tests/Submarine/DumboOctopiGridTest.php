@@ -280,4 +280,27 @@ class DumboOctopiGridTest extends TestCase
         }
         $this->assertEquals(1656, $grid0->getFlashCounter());
     }
+
+    public function testSync()
+    {
+        $input0 = [
+            '5483143223',
+            '2745854711',
+            '5264556173',
+            '6141336146',
+            '6357385478',
+            '4167524645',
+            '2176841721',
+            '6882881134',
+            '4846848554',
+            '5283751526',
+        ];
+
+        $grid = new DumboOctopiGrid($input0);
+
+        while(!$grid->detectSync()) {
+            $grid->step();
+        }
+        $this->assertEquals(195, $grid->getStepCounter());
+    }
 }
