@@ -21,6 +21,7 @@ class PathFinderTest extends TestCase
         $pathFinder = new PathFinder($path);
         $this->assertCount(6, $pathFinder->getCaves());
         $this->assertCount(10, $pathFinder->findPaths());
+        $this->assertCount(36, $pathFinder->findPathsSecondTry());
     }
 
     public function testCreateLargerPath()
@@ -40,6 +41,7 @@ class PathFinderTest extends TestCase
         $pathFinder = new PathFinder($path);
         $this->assertCount(7, $pathFinder->getCaves());
         $this->assertCount(19, $pathFinder->findPaths());
+        $this->assertCount(103, $pathFinder->findPathsSecondTry());
     }
 
     public function testCreateEvenLargerPath()
@@ -66,5 +68,6 @@ class PathFinderTest extends TestCase
         ];
         $pathFinder = new PathFinder($path);
         $this->assertCount(226, $pathFinder->findPaths());
+        $this->assertCount(3509, $pathFinder->findPathsSecondTry());
     }
 }

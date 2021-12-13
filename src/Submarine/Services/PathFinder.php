@@ -11,6 +11,8 @@ class PathFinder
     private array $caves = [];
     /** @var Cave[] */
     private array $paths = [];
+    /** @var Cave[] */
+    private array $pathsWithCounters = [];
 
     /**
      * @param array $caves
@@ -71,5 +73,64 @@ class PathFinder
         }
 
         return true;
+    }
+
+    public function findPathsSecondTry(): array
+    {
+        foreach($this->caves['start']->getConnections() as $connection) {
+            $this->stepSecondTry($connection, [$this->caves['start']]);
+        }
+
+        return $this->pathsWithCounters;
+    }
+
+    private function stepSecondTry(Cave $connection, array $array)
+    {
+        $formedPath = array_merge($array, [$connection]);
+        if  ($connection->getLabel() === 'end') {
+            $this->pathsWithCounters[] = $formedPath;
+        } else {
+            foreach($connection->getConnections() as $nextLevelConnection) {
+                if ($this->allowedForPathSecondTry($formedPath, $nextLevelConnection)) {
+                    $this->stepSecondTry($nextLevelConnection, $formedPath);
+                }
+            }
+        }
+    }
+
+    private function allowedForPathSecondTry(array $formedPath, Cave $possibleStep): bool
+    {
+        foreach($formedPath as $cave) {
+            if ($possibleStep->getLabel() === $cave->getLabel() && !$cave->isBig()) {
+                if ($possibleStep->getLabel() === 'start') {
+                    return false;
+                }
+                if (!$this->getAllowAnotherSmall($formedPath)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /** @var Cave[] $formedPath */
+    private function getAllowAnotherSmall(array $formedPath)
+    {
+        $caves = [];
+        foreach($formedPath as $cave) {
+            if (!$cave->isBig()) {
+                if (!isset($caves[$cave->getLabel()])) {
+                    $caves[$cave->getLabel()] = 0;
+                }
+                $caves[$cave->getLabel()]++;
+            }
+        }
+
+        $keysWithDuplicates = array_filter($caves, function($v){
+            return $v > 1;
+        });
+
+        return sizeof($keysWithDuplicates) === 0;
     }
 }
