@@ -109,13 +109,13 @@ class PolymerTest extends TestCase
             $dictionary[$rule->getPair()] = $rule;
         }
         $polymer = new Polymer($template, $dictionary);
-        $polymer->process(1);
-        $this->assertEquals(2-1, $polymer->getSummary());
-        $polymer->process(2);
-        $this->assertEquals(5, $polymer->getSummary());
-        $polymer->process(10);
-        $this->assertEquals(1588, $polymer->getSummary());
-//        $polymer->process(40);
-//        $this->assertEquals(2188189693529, $polymer->getSummary());
+//        $polymer->process(1);
+//        $this->assertEquals(2-1, $polymer->getSummary());
+//        $polymer->process(2);
+//        $this->assertEquals(5, $polymer->getSummary());
+//        $polymer->process(10);
+//        $this->assertEquals(1588, $polymer->getSummary());
+        $polymer->process(40);
+        $this->assertEquals(2188189693529, $polymer->getSummary());
     }
 }

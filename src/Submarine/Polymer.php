@@ -29,27 +29,38 @@ class Polymer
         $this->resetSummary();
         for ($i = 0; $i < strlen($this->chain) - 1; $i++) {
             $pair = $this->chain[$i] . $this->chain[$i + 1];
-            $this->smartStep($pair, $n - 1);
-            echo "finished pair ".$pair. PHP_EOL;
+            $this->summary = $this->sum($this->summary, $this->smartStep($pair, $n - 1));
+            echo "finished pair " . $pair . PHP_EOL;
         }
         $this->updateMaxMin();
     }
 
-    private function smartStep(string $pair, int $step)
+    private function smartStep(string $pair, int $step): array
     {
-        //echo "(" . $pair . ", " . $step . ")" . PHP_EOL;
+        if (isset($this->sumCache[$pair . $step])) {
+            return $this->sumCache[$pair . $step];
+        }
+
         if (isset($this->dictionary[$pair])) {
             $char = $this->dictionary[$pair]->getInsertion();
-            if (!isset($this->summary[$char])) {
-                $this->summary[$char] = 0;
-            }
-            $this->summary[$char]++;
             if ($step !== 0) {
-                //echo ($step -1) . " - ";
-                $this->smartStep($pair[0] . $char, $step - 1);
-                $this->smartStep($char . $pair[1], $step - 1);
+                $result = $this->sum(
+                    $this->smartStep($pair[0] . $char, $step - 1),
+                    $this->smartStep($char . $pair[1], $step - 1)
+                );
+                $result = $this->sum(
+                    $result,
+                    [$char => 1]
+                );
+            } else {
+                $result = [$char => 1];
             }
+
+            $this->sumCache[$pair . $step] = $result;
+            return $result;
         }
+
+        return [];
     }
 
     public function naiveStep()
@@ -113,5 +124,16 @@ class Polymer
             $this->summary[$char]++;
         }
         $this->updateMaxMin();
+    }
+
+    private function sum(array $a, array $b): array
+    {
+        $sums = [];
+
+        foreach (array_keys($a + $b) as $item) {
+            $sums[$item] = ($a[$item] ?? 0) + ($b[$item] ?? 0);
+        }
+
+        return $sums;
     }
 }
