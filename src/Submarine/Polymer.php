@@ -7,6 +7,9 @@ class Polymer
     private string $chain;
     /** @var PolymerInsertionRule[] */
     private array $dictionary;
+    private array $summary = [];
+    private int $maxOccurrence;
+    private int $minOccurrence;
 
     /**
      * @param string $chain
@@ -16,6 +19,13 @@ class Polymer
     {
         $this->chain = $chain;
         $this->dictionary = $dictionary;
+        foreach(str_split($this->getChain()) as $char) {
+            if (!isset($this->summary[$char])) {
+                $this->summary[$char] = 0;
+            }
+            $this->summary[$char]++;
+        }
+        $this->updateMaxMin();
     }
 
     public function step()
@@ -29,6 +39,11 @@ class Polymer
         foreach ($parts as $partIndex => $part) {
             if (isset($this->dictionary[$part])) {
                 $parts[$partIndex] = substr_replace($part, $this->dictionary[$part]->getResult(), 0);
+                if (!isset($this->summary[$this->dictionary[$part]->getInsertion()])) {
+                    $this->summary[$this->dictionary[$part]->getInsertion()] = 0;
+                }
+                $this->summary[$this->dictionary[$part]->getInsertion()]++;
+                $this->updateMaxMin();
             }
         }
         $this->chain = substr($parts[0], 0, 1);
@@ -45,16 +60,17 @@ class Polymer
         return $this->chain;
     }
 
-    public function getSummary()
+    public function getSummary(): int
     {
-        $summary = [];
-        foreach(str_split($this->getChain()) as $char) {
-            if (!isset($summary[$char])) {
-                $summary[$char] = 0;
-            }
-            $summary[$char]++;
-        }
+        return $this->maxOccurrence - $this->minOccurrence;
+    }
 
-        return max($summary) - min($summary);
+    /**
+     * @return void
+     */
+    private function updateMaxMin(): void
+    {
+        $this->maxOccurrence = max($this->summary);
+        $this->minOccurrence = min($this->summary);
     }
 }

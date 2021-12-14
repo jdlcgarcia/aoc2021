@@ -61,6 +61,10 @@ class PolymerTest extends TestCase
         $polymer->step();
         $polymer->step();
         $polymer->step();
-        $this->assertEquals(1588, $polymer->getSummary());
+        $this->assertEquals(1588, $polymer->getSummary(10));
+        for ($i = 11; $i < 40; $i++) {
+            $polymer->step();
+        }
+//        $this->assertEquals(2188189693529, $polymer->getSummary());
     }
 }
