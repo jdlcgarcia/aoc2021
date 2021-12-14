@@ -14,7 +14,8 @@ foreach ($rawRules as $rawRule) {
     $dictionary[$rule->getPair()] = $rule;
 }
 $polymer = new Polymer('HBCHSNFFVOBNOFHFOBNO', $dictionary);
-for ($i = 0; $i < 10; $i++) {
-    $polymer->step();
-}
-echo $polymer->getSummary() . PHP_EOL;
+$polymer->process(10);
+echo "10) ".$polymer->getSummary() . PHP_EOL;
+echo "---------".PHP_EOL;
+$polymer->process(40);
+echo "40) ".$polymer->getSummary() . PHP_EOL;

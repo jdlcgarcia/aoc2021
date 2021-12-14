@@ -10,6 +10,7 @@ class Polymer
     private array $summary = [];
     private int $maxOccurrence;
     private int $minOccurrence;
+    private array $sumCache = [];
 
     /**
      * @param string $chain
@@ -19,37 +20,58 @@ class Polymer
     {
         $this->chain = $chain;
         $this->dictionary = $dictionary;
-        foreach(str_split($this->getChain()) as $char) {
-            if (!isset($this->summary[$char])) {
-                $this->summary[$char] = 0;
-            }
-            $this->summary[$char]++;
+        $this->resetSummary();
+    }
+
+    public function process(int $n)
+    {
+        $this->summary = [];
+        $this->resetSummary();
+        for ($i = 0; $i < strlen($this->chain) - 1; $i++) {
+            $pair = $this->chain[$i] . $this->chain[$i + 1];
+            $this->smartStep($pair, $n - 1);
+            echo "finished pair ".$pair. PHP_EOL;
         }
         $this->updateMaxMin();
     }
 
-    public function step()
+    private function smartStep(string $pair, int $step)
     {
-        $parts = [];
-        foreach (str_split($this->chain) as $itemIndex => $char) {
-            if (isset($this->chain[$itemIndex + 1])) {
-                $parts[] = $char . $this->chain[$itemIndex + 1];
+        //echo "(" . $pair . ", " . $step . ")" . PHP_EOL;
+        if (isset($this->dictionary[$pair])) {
+            $char = $this->dictionary[$pair]->getInsertion();
+            if (!isset($this->summary[$char])) {
+                $this->summary[$char] = 0;
+            }
+            $this->summary[$char]++;
+            if ($step !== 0) {
+                //echo ($step -1) . " - ";
+                $this->smartStep($pair[0] . $char, $step - 1);
+                $this->smartStep($char . $pair[1], $step - 1);
             }
         }
-        foreach ($parts as $partIndex => $part) {
-            if (isset($this->dictionary[$part])) {
-                $parts[$partIndex] = substr_replace($part, $this->dictionary[$part]->getResult(), 0);
-                if (!isset($this->summary[$this->dictionary[$part]->getInsertion()])) {
-                    $this->summary[$this->dictionary[$part]->getInsertion()] = 0;
+    }
+
+    public function naiveStep()
+    {
+        $newChain = '';
+        for ($i = 0; $i < strlen($this->chain) - 1; $i++) {
+            $pair = $this->chain[$i] . $this->chain[$i + 1];
+            $addToChain = $this->chain[$i];
+            if (isset($this->dictionary[$pair])) {
+                $addToChain .= $this->dictionary[$pair]->getInsertion();
+                if (!isset($this->summary[$this->dictionary[$pair]->getInsertion()])) {
+                    $this->summary[$this->dictionary[$pair]->getInsertion()] = 0;
                 }
-                $this->summary[$this->dictionary[$part]->getInsertion()]++;
-                $this->updateMaxMin();
+                $this->summary[$this->dictionary[$pair]->getInsertion()]++;
+            } else {
+                $addToChain = '_';
             }
+            $newChain .= $addToChain;
         }
-        $this->chain = substr($parts[0], 0, 1);
-        foreach ($parts as $part) {
-            $this->chain .= substr($part, 1, strlen($part));
-        }
+        $newChain .= $this->chain[strlen($this->chain) - 1];
+        $this->chain = $newChain;
+        $this->updateMaxMin();
     }
 
     /**
@@ -72,5 +94,24 @@ class Polymer
     {
         $this->maxOccurrence = max($this->summary);
         $this->minOccurrence = min($this->summary);
+    }
+
+    public function quickStepCount(int $int): void
+    {
+
+    }
+
+    /**
+     * @return void
+     */
+    private function resetSummary(): void
+    {
+        foreach (str_split($this->getChain()) as $char) {
+            if (!isset($this->summary[$char])) {
+                $this->summary[$char] = 0;
+            }
+            $this->summary[$char]++;
+        }
+        $this->updateMaxMin();
     }
 }

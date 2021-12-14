@@ -8,18 +8,30 @@ use PHPUnit\Framework\TestCase;
 
 class PolymerTest extends TestCase
 {
-    public function testCreatePolymerAndOneRule()
+    public function testCreatePolymerAndOneRuleAndGiveANaiveStep()
     {
         $template = 'NNCB';
         $dictionary = [
             'NN' => new PolymerInsertionRule('NN -> C')
         ];
         $polymer = new Polymer($template, $dictionary);
-        $polymer->step();
-        $this->assertEquals('NCNCB', $polymer->getChain());
+        $polymer->naiveStep();
+        //$this->assertEquals('NCNCB', $polymer->getChain());
+        $this->assertEquals(2-1, $polymer->getSummary());
     }
 
-    public function testCreatePolymerAndMultipleRules()
+    public function testCreatePolymerAndOneRuleAndGiveASmartStep()
+    {
+        $template = 'NNCB';
+        $dictionary = [
+            'NN' => new PolymerInsertionRule('NN -> C')
+        ];
+        $polymer = new Polymer($template, $dictionary);
+        $polymer->process(1);
+        $this->assertEquals(2-1, $polymer->getSummary());
+    }
+
+    public function testCreatePolymerAndMultipleRulesWithNaiveSteps()
     {
         $template = 'NNCB';
         $listOfRules = [
@@ -46,25 +58,64 @@ class PolymerTest extends TestCase
             $dictionary[$rule->getPair()] = $rule;
         }
         $polymer = new Polymer($template, $dictionary);
-        $polymer->step();
+        $polymer->naiveStep();
         $this->assertEquals('NCNBCHB', $polymer->getChain());
-        $polymer->step();
+        $this->assertEquals(2-1, $polymer->getSummary());
+        $polymer->naiveStep();
         $this->assertEquals('NBCCNBBBCBHCB', $polymer->getChain());
-        $polymer->step();
+        $this->assertEquals(6-1, $polymer->getSummary());
+        $polymer->naiveStep();
         $this->assertEquals('NBBBCNCCNBBNBNBBCHBHHBCHB', $polymer->getChain());
-        $polymer->step();
+        $polymer->naiveStep();
         $this->assertEquals('NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB', $polymer->getChain());
-        $polymer->step();
+        $polymer->naiveStep();
         $this->assertEquals(97, strlen($polymer->getChain()));
-        $polymer->step();
-        $polymer->step();
-        $polymer->step();
-        $polymer->step();
-        $polymer->step();
-        $this->assertEquals(1588, $polymer->getSummary(10));
-        for ($i = 11; $i < 40; $i++) {
-            $polymer->step();
+        $polymer->naiveStep();
+        $polymer->naiveStep();
+        $polymer->naiveStep();
+        $polymer->naiveStep();
+        $polymer->naiveStep();
+//        $this->assertEquals(1588, $polymer->getSummary());
+//        for ($i = 11; $i < 40; $i++) {
+//            $polymer->naiveStep();
+//        }
+//        $this->assertEquals(2188189693529, $polymer->getSummary());
+    }
+
+    public function testCreatePolymerAndMultipleRulesWithSmartSteps()
+    {
+        $template = 'NNCB';
+        $listOfRules = [
+            'CH -> B',
+            'HH -> N',
+            'CB -> H',
+            'NH -> C',
+            'HB -> C',
+            'HC -> B',
+            'HN -> C',
+            'NN -> C',
+            'BH -> H',
+            'NC -> B',
+            'NB -> B',
+            'BN -> B',
+            'BB -> N',
+            'BC -> B',
+            'CC -> N',
+            'CN -> C',
+        ];
+        $dictionary = [];
+        foreach($listOfRules as $rawRule) {
+            $rule = new PolymerInsertionRule($rawRule);
+            $dictionary[$rule->getPair()] = $rule;
         }
+        $polymer = new Polymer($template, $dictionary);
+        $polymer->process(1);
+        $this->assertEquals(2-1, $polymer->getSummary());
+        $polymer->process(2);
+        $this->assertEquals(5, $polymer->getSummary());
+        $polymer->process(10);
+        $this->assertEquals(1588, $polymer->getSummary());
+//        $polymer->process(40);
 //        $this->assertEquals(2188189693529, $polymer->getSummary());
     }
 }
