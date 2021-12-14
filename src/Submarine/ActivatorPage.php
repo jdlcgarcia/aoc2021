@@ -130,4 +130,15 @@ class ActivatorPage
             $this->dots[$rowIndex][$axis + $offset] === self::MARK
         ) ? self::MARK : self::DOT;
     }
+
+    public function drawToFile()
+    {
+        $file = 'page.txt';
+        $content = '';
+        foreach ($this->dots as $row) {
+            $content .= implode('', $row);
+            $content .= PHP_EOL;
+        }
+        file_put_contents($file, $content);
+    }
 }
